@@ -1,0 +1,11 @@
+web:
+  build: .
+  command: python /code/app.py
+  volumes:
+    - .:/code
+  ports:
+    - "8888:8888"
+  links:
+    - db
+db:
+  image: redis
