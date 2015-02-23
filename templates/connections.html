@@ -3,7 +3,21 @@
     <title>PySheff February 2015</title>
   </head>
   <body>
-    <h1>Welcome back to the 1990s</h1>
-    <h2>{{connections}} page hits</h2>
+    <h1>Websockets at last</h1>
+    <h2><span id="connections">{{connections}}</span> users on this page now.</h2>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+
+    <script type="text/javascript">
+      $(document).ready(function() {
+        var url = "ws://" + document.domain + ":" + location.port;
+        var ws = new WebSocket(url + "/socket/") 
+        ws.onmessage = function (evt) {
+          var data = JSON.parse(evt.data);
+          $("#connections").html(data.connections);
+        };
+      });
+    </script>
   </body>
 </html>
