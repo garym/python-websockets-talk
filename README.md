@@ -6,7 +6,6 @@ Talk inspired and based on makaimc/python-websockets-example
 ### Using Fig and Docker
 
 ```sh
-fig build
 fig up
 ```
 The site should be served at http://localhost:8888/
