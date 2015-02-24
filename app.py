@@ -46,7 +46,7 @@ class ConnectionsHandler(WebSocketHandler):
 
 def make_app():
     return Application([url(r"/", ConnectionsPageHandler),
-                        url(r"/messages/", MessagePageHandler),
+                        url(r"/messages/?", MessagePageHandler),
                         url(r"/socket/", ConnectionsHandler),
                        ], autoreload=True)
   
