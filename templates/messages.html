@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <title>Python Sheffield</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        var url = "ws://" + document.domain + ":" + location.port;
+        var ws = new WebSocket(url + "/socket/");
+
+        $("#messageform").submit(function (event) {
+          ws.send($("#message").val());
+          $("#message").val('');
+          return false;
+        });
+        ws.onmessage = function (event) {
+          var msg = JSON.parse(event.data);
+          if (msg.type == "message") {
+            $("#message-list").prepend('<h3>' + msg.message + '<h3>');
+          }
+        };
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Send a message!</h1>
+    <form method="post" action="#" id="messageform">
+      <label></label>
+      <input type="text" id="message"></input>
+      <input type="submit" value="Submit"></input>
+    </form>
+    <div id="message-list"></div>
+  </body>
+</html>

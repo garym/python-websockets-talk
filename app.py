@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import cgi
+
 import redis
 
 from tornado.escape import json_encode
@@ -14,6 +16,11 @@ class ConnectionsPageHandler(RequestHandler):
     def get(self):
         connections = db.get('connections')
         self.render("templates/connections.html", connections=connections)
+
+
+class MessagePageHandler(RequestHandler):
+    def get(self):
+        self.render("templates/messages.html")
 
 
 class ConnectionsHandler(WebSocketHandler):
@@ -33,9 +40,13 @@ class ConnectionsHandler(WebSocketHandler):
         for handler in self.handlers:
             handler.write_message(data)
 
+    def on_message(self, msg):
+        self.broadcast_data({'type': 'message', 'message': cgi.escape(msg)})
+
 
 def make_app():
     return Application([url(r"/", ConnectionsPageHandler),
+                        url(r"/messages/", MessagePageHandler),
                         url(r"/socket/", ConnectionsHandler),
                        ], autoreload=True)
   
